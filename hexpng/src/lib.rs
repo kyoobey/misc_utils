@@ -106,8 +106,8 @@ mod tests {
 
 		// to future me: fix this test please
 
-		let expected_width = 10;
-		let expected_height = 10;
+		// let expected_width = 10;
+		// let expected_height = 10;
 		let png_data = super::generate_png(235, 35, 35, 127);
 
 		// use std::io::Write;
@@ -133,7 +133,7 @@ mod tests {
 		// 	panic!("png data format is not RGBA8");
 		// }
 
-		assert!(&png_data == test_data, "png data doesn't match expected");
+		assert!(&png_data == &test_bytes, "png data doesn't match expected");
 
 	}
 
