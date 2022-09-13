@@ -2,6 +2,8 @@
 
 
 # miscutils
+[![test_everything](https://github.com/tshrpl/misc_utils/actions/workflows/test_everything.yml/badge.svg?branch=main)](https://github.com/tshrpl/misc_utils/actions/workflows/test_everything.yml)
+
 a toy collection of miscellaneous utility programs (mostly for use by me)
 
 

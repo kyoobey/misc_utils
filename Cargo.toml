@@ -4,6 +4,9 @@
 [workspace]
 resolver = "2"
 
-members = []
+members = [
+	"hexpng",
+	"miscutils_server"
+]
 
 
