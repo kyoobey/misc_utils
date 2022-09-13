@@ -8,6 +8,24 @@ a toy collection of miscellaneous utility programs (mostly for use by me)
 
 
 
+# list of utils
+
+
+<details>
+<summary>
+
+## hexpng (hex code to png)
+
+</summary>
+
+
+converts a hex code to single color solid/translucent png
+
+
+</details>
+
+
+
 # License
 this repository including all the individual crates/packages are licensed under the WTFPL if not stated otherwise in a seperate `LICENSE.md` file
 
