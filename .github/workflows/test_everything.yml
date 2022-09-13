@@ -1,0 +1,25 @@
+
+
+
+name: test_everything
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: rustup update stable && rustup default stable
+    - name: Run tests
+      run: cargo test --verbose
+
+
