@@ -22,6 +22,6 @@ jobs:
     - name: hexpng tests
       run: cargo test -p hexpng --verbose
     - name: hexpng tests no_std
-      run: cargo test -p hexpng --verbose --target thumbv7m-none-eabi --no-default-features
+      run: cargo test -p hexpng --verbose --no-default-features --features "no-std" --target thumbv7m-none-eabi
 
 
