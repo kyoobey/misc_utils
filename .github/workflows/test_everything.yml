@@ -19,7 +19,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: rustup update stable && rustup default stable
-    - name: Run tests
-      run: cargo test --verbose
+    - name: hexpng tests
+      run: cargo test -p hexpng --verbose
+    - name: hexpng tests no_std
+      run: cargo test -p hexpng --verbose --no-default-features
 
 
