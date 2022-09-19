@@ -12,11 +12,13 @@ description = "generate png from hexcode"
 
 [dependencies]
 compression = { version = "~0.1.5", default-features = false, features = [ "zlib" ] }
+lazy_static = ">0.0.0"
 
 
 
 [features]
 default = [ "std" ]
-std = []
+std = [ "compression/std" ]
+no-std = [ "lazy_static/spin_no_std" ]
 
 
