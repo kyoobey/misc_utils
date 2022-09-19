@@ -7,6 +7,13 @@
 
 
 
+#![cfg_attr(not(feature = "std"), no_std)]
+
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+
+
+
 /// a const representing the version of this library
 pub const VERSION: [u8; 3] = [0, 0, 0];
 
@@ -20,12 +27,11 @@ pub use png::generate_png;
 
 mod png {
 
+	use compression::prelude::{ Action, ZlibEncoder, EncodeExt };
 
+	#[cfg(not(feature = "std"))]
+	use alloc::{ vec, vec::Vec };
 
-	// for compression
-	use std::io;
-	// use libflate::zlib::{ Encoder, EncodeOptions };
-	use libflate::zlib::Encoder;
 
 
 	const IMAGE_WIDTH : u32 = 10;
@@ -53,11 +59,7 @@ mod png {
 	}
 
 	fn idat_data (data: Vec<u8>) -> Vec<u8> {
-		// let encoder_options = EncodeOptions::new().no_compression();
-		// let mut encoder = Encoder::with_options(Vec::new(), encoder_options).unwrap();
-		let mut encoder = Encoder::new(Vec::new()).unwrap();
-		io::copy(&mut &data[..], &mut encoder).unwrap();
-		encoder.finish().into_result().unwrap()
+		data.encode(&mut ZlibEncoder::new(), Action::Finish).collect::<Result<Vec<u8>, _>>().unwrap()
 	}
 
 	// Image Header Chunk
@@ -101,39 +103,31 @@ mod png {
 #[cfg(test)]
 mod tests {
 
+	#[cfg(not(feature = "std"))]
+	use alloc::{ vec, vec::Vec };
+
+	use compression::prelude::{ ZlibDecoder, DecodeExt };
+
+
+
 	#[test]
 	fn test_generate_png_data () {
 
-		// to future me: fix this test please
-
-		// let expected_width = 10;
-		// let expected_height = 10;
+		let expected_width = 10;
+		let expected_height = 10;
 		let png_data = super::generate_png(235, 35, 35, 127);
 
 		// use std::io::Write;
 		// let mut file = std::fs::File::create("output.png").unwrap();
 		// file.write_all(&png_data).unwrap();
 
-		let test_bytes = {
-			let s = "89504e470d0a1a0a0000000d494844520000000a0000000a08060000008d32cfbd0000002249444154789cedca211100000c02c07521e8025382061c028978f747e0138b563f0a6a8ba8c177370a0e0000000049454e44ae426082";
-			(0..s.len())
-				.step_by(2)
-				.map(|i| u8::from_str_radix(&s[i..i + 2], 16).unwrap())
-				.collect::<Vec<u8>>()
-		};
+		let compressed_width  = u32::from_be_bytes(png_data[16..20].try_into().unwrap());
+		let compressed_height = u32::from_be_bytes(png_data[20..24].try_into().unwrap());
 
-		// if let image::DynamicImage::ImageRgba8(img) = image::load_from_memory(&test_bytes).unwrap() {
-		// 	assert!(img.width() == 10, "png width is {} which doesn't match expected {}", img.width(), expected_width);
-		// 	assert!(img.height() == 10, "png height is {} which doesn't match expected {}", img.height(), expected_height);
+		assert!(compressed_width == expected_width && compressed_height == expected_height, "png dimensions doesn't match");
 
-		// 	for (_, _, pixel) in img.enumerate_pixels() {
-		// 		assert!(&image::Rgba::<u8>([235, 35, 35, 127]) == pixel, "pixel doesn't match expected Rgba(235, 35, 35, 127)");
-		// 	}
-		// } else {
-		// 	panic!("png data format is not RGBA8");
-		// }
-
-		assert!(&png_data == &test_bytes, "png data doesn't match expected");
+		let decompressed_data = png_data[41..png_data.len()-12].to_vec().decode(&mut ZlibDecoder::new()).collect::<Result<Vec<u8>, _>>().unwrap();
+		assert!(decompressed_data[..9].to_vec() == vec![0, 235, 35, 35, 127, 235, 35, 35, 127], "png data is corrupted");
 
 	}
 
