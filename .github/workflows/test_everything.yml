@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: rustup update stable && rustup default stable
+    - run: rustup update stable && rustup default stable && rustup target add thumbv7m-none-eabi
     - name: hexpng tests
       run: cargo test -p hexpng --verbose
     - name: hexpng tests no_std
-      run: cargo test -p hexpng --verbose --no-default-features
+      run: cargo test -p hexpng --verbose --target thumbv7m-none-eabi --no-default-features
 
 
