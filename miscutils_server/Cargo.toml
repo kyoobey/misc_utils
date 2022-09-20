@@ -1,0 +1,24 @@
+
+
+
+[package]
+name = "miscutils_server"
+version = "0.1.0"
+authors = ["tshrpl <tshrpl@tutanota.com>"]
+edition = "2021"
+description = "just a shitty webserver to use my miscutils crates"
+
+
+
+[dependencies]
+
+clappers = "~2.0.3"
+fancy = "~0.3.1"
+rand = "~0.8.5"
+
+log = "~0.4.17"
+simple_logger = { version = "~2.3.0", features = [ "colors" ], default-features = false }
+
+hexpng = { path = "../hexpng" }
+
+
