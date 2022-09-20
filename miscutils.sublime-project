@@ -1,0 +1,19 @@
+{
+	"folders":
+	[
+		{
+			"path": "miscutils_server",
+		},
+		{ "path": "hexpng" },
+		{
+			"path": ".",
+			"file_exclude_patterns": ["Cargo.lock"],
+			"folder_exclude_patterns": [
+				".sublime_workspaces",
+				"target",
+				"miscutils_server",
+				"hexpng"
+			]
+		}
+	]
+}
