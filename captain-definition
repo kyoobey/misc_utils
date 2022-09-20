@@ -1,0 +1,13 @@
+
+
+
+{
+	"schemaVersion": 2,
+	"dockerFileLines": [
+		"FROM scratch",
+		"ADD https://github.com/tshrpl/misc_utils/suites/8381508274/artifacts/369946921 server",
+		"CMD [\"./server\"]"
+	]
+}
+
+
